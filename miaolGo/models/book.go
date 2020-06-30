@@ -9,15 +9,15 @@ import (
 var db *sql.DB = drivers.Testsql()
 
 type Book struct {
-	BOOKID    int    `json:"bookId" form:"bookId" primaryKey:"true"`
-	BOOKPRICE string `json:"bookPrice,omitempty"`
-	BOOKNAME  string `json:"bookName,omitempty"`
-	BOOKAUTH  string `json:"bookAuth,omitempty"`
+	BOOKID    int    `json:"id" form:"id" primaryKey:"true"`
+	BOOKPRICE string `json:"book_price,omitempty"`
+	BOOKNAME  string `json:"book_name,omitempty"`
 }
 
 func (model *Book) GetUser(id int) (book Book, err error) {
 	// find one record
-	err = db.QueryRow("SELECT `bookAuth`, `bookPrice`, `bookName`, `bookID` FROM `books` WHERE `bookID` = ?;", id).Scan(&book.BOOKAUTH, &book.BOOKNAME, &book.BOOKNAME, &book.BOOKID)
+	sqlStatement := `SELECT * FROM book WHERE id=$1;`
+	err = db.QueryRow(sqlStatement, id).Scan(&book.BOOKPRICE, &book.BOOKNAME, &book.BOOKID)
 
 	if err != nil {
 		log.Println(err.Error())
