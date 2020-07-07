@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"log"
 	"miaolGo/models"
 	"net/http"
 	"strconv"
@@ -9,9 +10,9 @@ import (
 
 func UserGet(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.Param("id"))
-	userModel := models.Book{}
+	bookModel := models.Book{}
 
-	var data, err = userModel.GetUser(id)
+	var data, err = bookModel.GetUser(id)
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
@@ -22,5 +23,20 @@ func UserGet(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"data": data,
+	})
+}
+
+func UserCheck(ctx *gin.Context) {
+	name := ctx.Param("name")
+	pwd := ctx.Param("pwd")
+	userModel := models.User{}
+
+	var po, err = userModel.CheckUser(name, pwd)
+	if err != nil {
+		log.Println("error")
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": po,
 	})
 }

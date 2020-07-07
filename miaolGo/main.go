@@ -6,8 +6,6 @@ import (
 	"miaolGo/controller"
 )
 
-
-
 func main() {
 
 	router := gin.Default()
@@ -15,13 +13,9 @@ func main() {
 	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/miaol/:id", controller.UserGet)
+		v1.GET("/user/:name/:pwd", controller.UserCheck)
 		//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 	router.Run()
 
 }
-
-
-
-
-
