@@ -25,10 +25,10 @@ type LoginInfo struct {
 func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
 	db := drivers.Testsql()
 	defer db.Close()
-	sqlStatement1 := `SELECT * FROM users WHERE name=$1 and password=$2;`
+	sqlStatement1 := `SELECT id FROM users WHERE name=$1 and password=$2;`
 	var user User
 	flag := true
-	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NAME, &user.NICKNAME, &user.PASSWORD, &user.EMAIL)
+	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID)
 	if err != nil {
 		log.Println("login failed ")
 		log.Println(err)
