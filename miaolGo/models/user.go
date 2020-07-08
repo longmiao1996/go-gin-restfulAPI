@@ -43,3 +43,15 @@ func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
 	_, err = stmt.Exec(create_time, name, pwd, flag)
 	return flag, err
 }
+
+func (model *User) AddUser(name, nick_name, password, email string) (err error) {
+	db := drivers.Testsql()
+	defer db.Close()
+	stmt, err := db.Prepare("INSERT INTO users(name,nick_name,password,email,create_time) VALUES($1,$2,$3,$4,$5)")
+	if err != nil {
+		log.Println(err)
+	}
+	create_time := time.Now().Format("2006-01-02 15:04:05")
+	_, err = stmt.Exec(name, nick_name, password, email, create_time)
+	return
+}

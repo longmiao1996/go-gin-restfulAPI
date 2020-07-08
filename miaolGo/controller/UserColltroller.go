@@ -40,3 +40,20 @@ func UserCheck(ctx *gin.Context) {
 		"data": po,
 	})
 }
+
+func UserAdd(ctx *gin.Context) {
+	name := ctx.Param("name")
+	nick_name := ctx.Param("nick_name")
+	pwd := ctx.Param("pwd")
+	email := ctx.Param("email")
+	user := models.User{}
+
+	err := user.AddUser(name, nick_name, pwd, email)
+	if err != nil {
+		log.Println(err)
+	}
+
+	ctx.JSONP(http.StatusOK, gin.H{
+		"data": err,
+	})
+}
