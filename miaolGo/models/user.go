@@ -3,6 +3,7 @@ package models
 import (
 	"log"
 	"miaolGo/drivers"
+	"reflect"
 	"time"
 )
 
@@ -47,11 +48,22 @@ func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
 func (model *User) AddUser(name, nick_name, password, email string) (err error) {
 	db := drivers.Testsql()
 	defer db.Close()
-	stmt, err := db.Prepare("INSERT INTO users(name,nick_name,password,email,create_time) VALUES($1,$2,$3,$4,$5)")
+	sqlStatement1 := `SELECT id FROM users WHERE name=$1;`
+	var user User
+	err = db.QueryRow(sqlStatement1, name).Scan(&user.ID)
 	if err != nil {
 		log.Println(err)
 	}
-	create_time := time.Now().Format("2006-01-02 15:04:05")
-	_, err = stmt.Exec(name, nick_name, password, email, create_time)
+	//这个用户名没被注册过，可以继续注册
+	if reflect.DeepEqual(user, User{}) {
+		stmt, err := db.Prepare("INSERT INTO users(name,nick_name,password,email,create_time) VALUES($1,$2,$3,$4,$5)")
+		if err != nil {
+			log.Println(err)
+		}
+		create_time := time.Now().Format("2006-01-02 15:04:05")
+		_, err = stmt.Exec(name, nick_name, password, email, create_time)
+	} else {
+		return
+	}
 	return
 }
