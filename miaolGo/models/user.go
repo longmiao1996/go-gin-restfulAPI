@@ -2,6 +2,8 @@ package models
 
 import (
 	"log"
+	"miaolGo/drivers"
+	"time"
 )
 
 type User struct {
@@ -12,15 +14,32 @@ type User struct {
 	EMAIL    string `json:"email"`
 }
 
+type LoginInfo struct {
+	ID         int    `json:"id" form:"id" primarykey:"true"`
+	CREATETIME string `json:"create_time"`
+	USERNAME   string `json:"user_name"`
+	USERPWD    string `json:"user_pwd"`
+	STATUS     string `json:"s"`
+}
+
 func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
-	sqlStatement1 := `SELECT * FROM fuck WHERE name=$1 and password=$2;`
+	db := drivers.Testsql()
+	defer db.Close()
+	sqlStatement1 := `SELECT * FROM users WHERE name=$1 and password=$2;`
 	var user User
+	flag := true
 	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NAME, &user.NICKNAME, &user.PASSWORD, &user.EMAIL)
 	if err != nil {
 		log.Println("login failed ")
 		log.Println(err)
-		return false, err
+		flag = false
 	}
-
-	return true, err
+	//把登录信息存入数据库login_info
+	create_time := time.Now().Format("2006-01-02 15:04:05")
+	stmt, err := db.Prepare("INSERT INTO login_info(create_time,user_name,user_pwd,status) VALUES($1,$2,$3,$4)")
+	if err != nil {
+		log.Println(err)
+	}
+	_, err = stmt.Exec(create_time, name, pwd, flag)
+	return flag, err
 }
