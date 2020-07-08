@@ -19,7 +19,7 @@ type LoginInfo struct {
 	CREATETIME string `json:"create_time"`
 	USERNAME   string `json:"user_name"`
 	USERPWD    string `json:"user_pwd"`
-	STATUS     string `json:"s"`
+	STATUS     string `json:"status"`
 }
 
 func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
