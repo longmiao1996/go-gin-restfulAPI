@@ -14,7 +14,7 @@ func main() {
 	{
 		v1.GET("/miaol/:id", controller.UserGet)
 		v1.GET("/user/:name/:pwd", controller.UserCheck)
-		v1.GET("/adduser/:name/:nick_name/:pwd/:email", controller.UserAdd)
+		v1.POST("/adduser", controller.UserAdd)
 		//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 	router.Run()
