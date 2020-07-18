@@ -23,7 +23,7 @@ type LoginInfo struct {
 	STATUS     string `json:"status"`
 }
 
-func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
+func (model *User) CheckUser(name, pwd, ip string) (bo bool, err error) {
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id FROM users WHERE name=$1 and password=$2;`
@@ -37,15 +37,16 @@ func (model *User) CheckUser(name, pwd string) (bo bool, err error) {
 	}
 	//把登录信息存入数据库login_info
 	create_time := time.Now().Format("2006-01-02 15:04:05")
-	stmt, err := db.Prepare("INSERT INTO login_info(create_time,user_name,user_pwd,status) VALUES($1,$2,$3,$4)")
+	stmt, err := db.Prepare("INSERT INTO login_info(create_time,user_name,user_pwd,status,ip) VALUES($1,$2,$3,$4,$5)")
 	if err != nil {
 		log.Println(err)
 	}
-	_, err = stmt.Exec(create_time, name, pwd, flag)
+	_, err = stmt.Exec(create_time, name, pwd, flag, ip)
 	return flag, err
 }
 
-func (model *User) AddUser(name, nick_name, password, email string) (err error) {
+func (model *User) AddUser(name, nick_name, password, email string) (err error, flag bool) {
+	flag = false
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id FROM users WHERE name=$1;`
@@ -53,6 +54,7 @@ func (model *User) AddUser(name, nick_name, password, email string) (err error) 
 	err = db.QueryRow(sqlStatement1, name).Scan(&user.ID)
 	if err != nil {
 		log.Println(err)
+		flag = true
 	}
 	//这个用户名没被注册过，可以继续注册
 	if reflect.DeepEqual(user, User{}) {

@@ -31,8 +31,9 @@ func UserCheck(ctx *gin.Context) {
 	name := ctx.Request.FormValue("name")
 	pwd := ctx.Request.FormValue("pwd")
 	userModel := models.User{}
+	ip := ctx.ClientIP()
 
-	var po, err = userModel.CheckUser(name, pwd)
+	var po, err = userModel.CheckUser(name, pwd, ip)
 	if err != nil {
 		log.Println("error")
 	}
@@ -49,7 +50,7 @@ func UserAdd(ctx *gin.Context) {
 	email := ctx.Request.FormValue("email")
 	user := models.User{}
 
-	err := user.AddUser(name, nick_name, pwd, email)
+	var err, flag = user.AddUser(name, nick_name, pwd, email)
 	if err != nil {
 		log.Println(err)
 	}
@@ -59,5 +60,6 @@ func UserAdd(ctx *gin.Context) {
 		"nick_name": nick_name,
 		"pwd":       pwd,
 		"email":     email,
+		"flag":      flag,
 	})
 }
