@@ -1,9 +1,10 @@
 package main
 
 import (
+	"miaolGo/controller"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"miaolGo/controller"
 )
 
 func main() {
