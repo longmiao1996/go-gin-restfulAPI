@@ -1,11 +1,12 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"miaolGo/models"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func UserGet(ctx *gin.Context) {
@@ -27,8 +28,8 @@ func UserGet(ctx *gin.Context) {
 }
 
 func UserCheck(ctx *gin.Context) {
-	name := ctx.Param("name")
-	pwd := ctx.Param("pwd")
+	name := ctx.Request.FormValue("name")
+	pwd := ctx.Request.FormValue("pwd")
 	userModel := models.User{}
 
 	var po, err = userModel.CheckUser(name, pwd)
