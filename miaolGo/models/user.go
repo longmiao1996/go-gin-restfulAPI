@@ -8,11 +8,12 @@ import (
 )
 
 type User struct {
-	ID       int    `json:"id" form:"id" primaryKey:"true"`
-	NAME     string `json:"name"`
-	NICKNAME string `json:"nick_name"`
-	PASSWORD string `json:"password"`
-	EMAIL    string `json:"email"`
+	ID           int    `json:"id" form:"id" primaryKey:"true"`
+	NAME         string `json:"name"`
+	NICKNAME     string `json:"nick_name"`
+	PASSWORD     string `json:"password"`
+	EMAIL        string `json:"email"`
+	IMAGEADDRESS string `json:"image_address"`
 }
 
 type LoginInfo struct {
@@ -23,19 +24,20 @@ type LoginInfo struct {
 	STATUS     string `json:"status"`
 }
 
-func (model *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string) {
+func (model *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string, image_address string) {
 	db := drivers.Testsql()
 	defer db.Close()
-	sqlStatement1 := `SELECT id, nick_name FROM users WHERE name=$1 and password=$2;`
+	sqlStatement1 := `SELECT id, nick_name, image_address FROM users WHERE name=$1 and password=$2;`
 	var user User
 	flag = true
-	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NICKNAME)
+	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NICKNAME, &user.IMAGEADDRESS)
 	if err != nil {
 		log.Println("login failed ")
 		log.Println(err)
 		flag = false
 	}
 	nick_name = user.NICKNAME
+	image_address = user.IMAGEADDRESS
 	//把登录信息存入数据库login_info
 	create_time := time.Now().Format("2006-01-02 15:04:05")
 	stmt, err := db.Prepare("INSERT INTO login_info(create_time,user_name,user_pwd,status,ip) VALUES($1,$2,$3,$4,$5)")
