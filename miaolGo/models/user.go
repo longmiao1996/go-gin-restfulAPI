@@ -27,7 +27,7 @@ type LoginInfo struct {
 func (model *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string, image_address string) {
 	db := drivers.Testsql()
 	defer db.Close()
-	sqlStatement1 := `SELECT id, nick_name, image_address FROM users WHERE name=$1 and password=$2;`
+	sqlStatement1 := `SELECT id, nick_name, COALESCE(image_address,'') FROM users WHERE name=$1 and password=$2;`
 	var user User
 	flag = true
 	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NICKNAME, &user.IMAGEADDRESS)
