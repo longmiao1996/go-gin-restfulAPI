@@ -23,18 +23,19 @@ type LoginInfo struct {
 	STATUS     string `json:"status"`
 }
 
-func (model *User) CheckUser(name, pwd, ip string) (bo bool, err error) {
+func (model *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string) {
 	db := drivers.Testsql()
 	defer db.Close()
-	sqlStatement1 := `SELECT id FROM users WHERE name=$1 and password=$2;`
+	sqlStatement1 := `SELECT id, nick_name FROM users WHERE name=$1 and password=$2;`
 	var user User
-	flag := true
-	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID)
+	flag = true
+	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NICKNAME)
 	if err != nil {
 		log.Println("login failed ")
 		log.Println(err)
 		flag = false
 	}
+	nick_name = user.NICKNAME
 	//把登录信息存入数据库login_info
 	create_time := time.Now().Format("2006-01-02 15:04:05")
 	stmt, err := db.Prepare("INSERT INTO login_info(create_time,user_name,user_pwd,status,ip) VALUES($1,$2,$3,$4,$5)")
@@ -42,7 +43,7 @@ func (model *User) CheckUser(name, pwd, ip string) (bo bool, err error) {
 		log.Println(err)
 	}
 	_, err = stmt.Exec(create_time, name, pwd, flag, ip)
-	return flag, err
+	return
 }
 
 func (model *User) AddUser(name, nick_name, password, email string) (err error, flag bool) {

@@ -33,13 +33,14 @@ func UserCheck(ctx *gin.Context) {
 	userModel := models.User{}
 	ip := ctx.ClientIP()
 
-	var po, err = userModel.CheckUser(name, pwd, ip)
+	var po, err, nick_name = userModel.CheckUser(name, pwd, ip)
 	if err != nil {
 		log.Println("error")
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"data": po,
+		"data":      po,
+		"nick_name": nick_name,
 	})
 }
 
