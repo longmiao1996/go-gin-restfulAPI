@@ -28,7 +28,6 @@ func (user *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_na
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id, nick_name, COALESCE(image_address,'') FROM users WHERE name=$1 and password=$2;`
-	// var user User
 	flag = true
 	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NICKNAME, &user.IMAGEADDRESS)
 	if err != nil {
@@ -53,7 +52,6 @@ func (user *User) AddUser(name, nick_name, password, email string) (err error, f
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id FROM users WHERE name=$1;`
-	// var user User
 	err = db.QueryRow(sqlStatement1, name).Scan(&user.ID)
 	if err != nil {
 		log.Println(err)
