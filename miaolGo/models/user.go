@@ -24,11 +24,11 @@ type LoginInfo struct {
 	STATUS     string `json:"status"`
 }
 
-func (model *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string, image_address string) {
+func (user *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string, image_address string) {
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id, nick_name, COALESCE(image_address,'') FROM users WHERE name=$1 and password=$2;`
-	var user User
+	// var user User
 	flag = true
 	err = db.QueryRow(sqlStatement1, name, pwd).Scan(&user.ID, &user.NICKNAME, &user.IMAGEADDRESS)
 	if err != nil {
@@ -48,19 +48,19 @@ func (model *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_n
 	return
 }
 
-func (model *User) AddUser(name, nick_name, password, email string) (err error, flag bool) {
+func (user *User) AddUser(name, nick_name, password, email string) (err error, flag bool) {
 	flag = false
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id FROM users WHERE name=$1;`
-	var user User
+	// var user User
 	err = db.QueryRow(sqlStatement1, name).Scan(&user.ID)
 	if err != nil {
 		log.Println(err)
 		flag = true
 	}
 	//这个用户名没被注册过，可以继续注册
-	if reflect.DeepEqual(user, User{}) {
+	if reflect.DeepEqual(*user, User{}) {
 		stmt, err := db.Prepare("INSERT INTO users(name,nick_name,password,email,create_time) VALUES($1,$2,$3,$4,$5)")
 		if err != nil {
 			log.Println(err)
