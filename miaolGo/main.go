@@ -16,6 +16,7 @@ func main() {
 	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/miaol/:id", controller.UserGet)
+		v1.GET("/userinfos/:username", controller.UserInfoGet)
 		v1.POST("/user", controller.UserCheck)
 		v1.POST("/adduser", controller.UserAdd)
 		//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

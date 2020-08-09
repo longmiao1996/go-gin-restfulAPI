@@ -2,6 +2,7 @@ package controller
 
 import (
 	"log"
+	"miaolGo/api"
 	"miaolGo/models"
 	"net/http"
 	"strconv"
@@ -63,5 +64,19 @@ func UserAdd(ctx *gin.Context) {
 		"pwd":       pwd,
 		"email":     email,
 		"flag":      flag,
+	})
+}
+
+func UserInfoGet(ctx *gin.Context) {
+	username := ctx.Param("username")
+
+	var nick_name, image_address = api.Get_user_infos(username)
+	// if err != nil {
+	// 	log.Println("error")
+	// }
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"nick_name":     nick_name,
+		"image_address": image_address,
 	})
 }
