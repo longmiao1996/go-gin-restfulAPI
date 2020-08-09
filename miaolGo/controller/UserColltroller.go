@@ -84,3 +84,17 @@ func UserInfoGet(ctx *gin.Context) {
 		"image_address": imageAddress,
 	})
 }
+
+// ArticleAdd commit article
+func ArticleAdd(ctx *gin.Context) {
+	userName := ctx.Request.FormValue("userName")
+	nickName := ctx.Request.FormValue("nickName")
+	title := ctx.Request.FormValue("title")
+	article := ctx.Request.FormValue("article")
+	imageAddr := ctx.Request.FormValue("imageAddr")
+
+	var flag = api.AddArticle(userName, nickName, title, article, imageAddr)
+	ctx.JSONP(http.StatusOK, gin.H{
+		"flag": flag,
+	})
+}

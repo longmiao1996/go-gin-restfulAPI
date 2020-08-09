@@ -19,13 +19,14 @@ func main() {
 		v1.GET("/userinfos/:username", controller.UserInfoGet)
 		v1.POST("/user", controller.UserCheck)
 		v1.POST("/adduser", controller.UserAdd)
+		v1.POST("/addinfos", controller.ArticleAdd)
 		//router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 	router.Run()
 
 }
 
-// 开启跨域函数
+// Cors 开启跨域函数
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
