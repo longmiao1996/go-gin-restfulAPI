@@ -8,12 +8,14 @@ import (
 
 var db *sql.DB = drivers.Testsql()
 
+// Book book model
 type Book struct {
 	BOOKID    int    `json:"id" form:"id" primaryKey:"true"`
 	BOOKPRICE string `json:"book_price,omitempty"`
 	BOOKNAME  string `json:"book_name,omitempty"`
 }
 
+// GetUser 测试代码
 func (model *Book) GetUser(id int) (book Book, err error) {
 	// find one record
 	sqlStatement := `SELECT * FROM book WHERE id=$1;`

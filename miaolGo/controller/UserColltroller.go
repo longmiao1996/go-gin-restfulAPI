@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// UserGet 用户取得
 func UserGet(ctx *gin.Context) {
 	id, _ := strconv.Atoi(ctx.Param("id"))
 	bookModel := models.Book{}
@@ -28,55 +29,58 @@ func UserGet(ctx *gin.Context) {
 	})
 }
 
+// UserCheck 验证用户
 func UserCheck(ctx *gin.Context) {
 	name := ctx.Request.FormValue("name")
 	pwd := ctx.Request.FormValue("pwd")
 	userModel := models.User{}
 	ip := ctx.ClientIP()
 
-	var po, err, nick_name, image_address = userModel.CheckUser(name, pwd, ip)
+	var po, err, nickName, imageAddress = userModel.CheckUser(name, pwd, ip)
 	if err != nil {
 		log.Println("error")
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"data":          po,
-		"nick_name":     nick_name,
-		"image_address": image_address,
+		"nick_name":     nickName,
+		"image_address": imageAddress,
 	})
 }
 
+// UserAdd 用户添加
 func UserAdd(ctx *gin.Context) {
 	name := ctx.Request.FormValue("name")
-	nick_name := ctx.Request.FormValue("nick_name")
+	nickName := ctx.Request.FormValue("nick_name")
 	pwd := ctx.Request.FormValue("pwd")
 	email := ctx.Request.FormValue("email")
 	user := models.User{}
 
-	var err, flag = user.AddUser(name, nick_name, pwd, email)
+	var err, flag = user.AddUser(name, nickName, pwd, email)
 	if err != nil {
 		log.Println(err)
 	}
 
 	ctx.JSONP(http.StatusOK, gin.H{
 		"name":      name,
-		"nick_name": nick_name,
+		"nick_name": nickName,
 		"pwd":       pwd,
 		"email":     email,
 		"flag":      flag,
 	})
 }
 
+// UserInfoGet 用户信息取得
 func UserInfoGet(ctx *gin.Context) {
 	username := ctx.Param("username")
 
-	var nick_name, image_address = api.Get_user_infos(username)
+	var nickName, imageAddress = api.GetUserInfos(username)
 	// if err != nil {
 	// 	log.Println("error")
 	// }
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"nick_name":     nick_name,
-		"image_address": image_address,
+		"nick_name":     nickName,
+		"image_address": imageAddress,
 	})
 }
