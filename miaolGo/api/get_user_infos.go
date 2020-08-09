@@ -8,7 +8,7 @@ import (
 
 //GetUserInfos 取得用户详细信息
 func GetUserInfos(userName string) (nickName string, imageAddress string) {
-	user := models.User{}
+	user := models.NewUser()
 	db := drivers.Testsql()
 	defer db.Close()
 	sqlStatement1 := `SELECT id, nick_name, COALESCE(image_address,'') FROM users WHERE name=$1;`

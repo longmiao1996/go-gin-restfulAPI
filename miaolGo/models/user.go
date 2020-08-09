@@ -24,6 +24,19 @@ type LoginInfo struct {
 	STATUS     string `json:"status"`
 }
 
+// NewUser 导出结构体
+func NewUser() *User {
+	user := new(User)
+	return user
+}
+
+// NewLoginInfo 导出结构体
+func NewLoginInfo() *LoginInfo {
+	logininfo := new(LoginInfo)
+	return logininfo
+}
+
+// CheckUser 验证用户
 func (user *User) CheckUser(name, pwd, ip string) (flag bool, err error, nick_name string, image_address string) {
 	db := drivers.Testsql()
 	defer db.Close()
