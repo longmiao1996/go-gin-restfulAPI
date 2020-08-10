@@ -91,9 +91,10 @@ func ArticleAdd(ctx *gin.Context) {
 	nickName := ctx.Request.FormValue("nickName")
 	title := ctx.Request.FormValue("title")
 	article := ctx.Request.FormValue("article")
-	imageAddr := ctx.Request.FormValue("imageAddr")
+	imagebase64 := ctx.Request.FormValue("imagebase64")
+	imageName := ctx.Request.FormValue("imageName")
 
-	var flag = api.AddArticle(userName, nickName, title, article, imageAddr)
+	var flag = api.AddArticle(userName, nickName, title, article, imagebase64, imageName)
 	ctx.JSONP(http.StatusOK, gin.H{
 		"flag": flag,
 	})
