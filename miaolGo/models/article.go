@@ -10,3 +10,9 @@ type Article struct {
 	IMAGEADDRESS string `json:"image_address"`
 	TIME         string `json:"time"`
 }
+
+// NewArticle 返回结构体
+func NewArticle() (article *Article) {
+	article = new(Article)
+	return
+}

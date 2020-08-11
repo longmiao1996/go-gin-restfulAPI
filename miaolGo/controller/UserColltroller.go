@@ -99,3 +99,18 @@ func ArticleAdd(ctx *gin.Context) {
 		"flag": flag,
 	})
 }
+
+// UserArticleGet 取得用户文章
+func UserArticleGet(ctx *gin.Context) {
+	username := ctx.Param("username")
+
+	var articleList, err = api.GetUserArticles(username)
+	// if err != nil {
+	// 	log.Println("error")
+	// }
+	if err != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"ArticleInfos": articleList,
+		})
+	}
+}

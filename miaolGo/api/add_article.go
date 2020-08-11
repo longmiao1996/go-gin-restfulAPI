@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"miaolGo/drivers"
+	"miaolGo/models"
 	"os"
 	"strings"
 	"time"
@@ -68,5 +69,28 @@ func CheckFileExit(filePath string) (exit bool) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		exit = false
 	}
+	return
+}
+
+// GetUserArticles 用户文章取得
+func GetUserArticles(userName string) (articleList []map[string]string, err error) {
+	// var articleMap map[string]string
+	article := models.NewArticle()
+	db := drivers.Testsql()
+	defer db.Close()
+	sql := `SELECT title,article,image_address FROM article WHERE name=$1;`
+	rows, err := db.Query(sql, userName)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	for rows.Next() {
+		rows.Scan(&article.TITLE, &article.ARTICLE, &article.IMAGEADDRESS)
+		// articleMap["title"] = article.TITLE
+		// articleMap["article"] = article.TITLE
+		// articleMap["title"] = article.TITLE
+		articleList = append(articleList, map[string]string{"title": article.TITLE, "article": article.ARTICLE, "imageAddr": article.IMAGEADDRESS})
+	}
+	fmt.Println(articleList)
 	return
 }

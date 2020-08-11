@@ -17,6 +17,7 @@ func main() {
 	{
 		v1.GET("/miaol/:id", controller.UserGet)
 		v1.GET("/userinfos/:username", controller.UserInfoGet)
+		v1.GET("/articleinfos/:username", controller.UserArticleGet)
 		v1.POST("/user", controller.UserCheck)
 		v1.POST("/adduser", controller.UserAdd)
 		v1.POST("/addinfos", controller.ArticleAdd)
