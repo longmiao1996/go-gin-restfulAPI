@@ -60,3 +60,12 @@ func UploadImage(userName, imageBase64, image string) (imageName string, flag bo
 
 	return
 }
+
+// CheckFileExit 判断文件是否存在
+func CheckFileExit(filePath string) (exit bool) {
+	exit = true
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		exit = false
+	}
+	return
+}
