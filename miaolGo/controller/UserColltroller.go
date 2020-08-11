@@ -109,8 +109,10 @@ func UserArticleGet(ctx *gin.Context) {
 	// 	log.Println("error")
 	// }
 	if err != nil {
-		ctx.JSON(http.StatusOK, gin.H{
-			"ArticleInfos": articleList,
-		})
+		log.Println(err)
 	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"ArticleInfos": articleList,
+	})
+
 }

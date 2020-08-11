@@ -91,6 +91,5 @@ func GetUserArticles(userName string) (articleList []map[string]string, err erro
 		// articleMap["title"] = article.TITLE
 		articleList = append(articleList, map[string]string{"title": article.TITLE, "article": article.ARTICLE, "imageAddr": article.IMAGEADDRESS})
 	}
-	fmt.Println(articleList)
 	return
 }
