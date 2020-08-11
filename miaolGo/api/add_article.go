@@ -38,6 +38,7 @@ func AddArticle(userName, nickName, title, article, imagebase64, image string) (
 
 // UploadImage 图片上传
 func UploadImage(userName, imageBase64, image string) (imageName string, flag bool) {
+	// 前端传过来的base64格式需要修改
 	imageBase64 = imageBase64[strings.IndexByte(imageBase64, ',')+1:]
 	flag = true
 	imageByte, err := base64.StdEncoding.DecodeString(imageBase64)
