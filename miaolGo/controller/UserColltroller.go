@@ -102,7 +102,7 @@ func ArticleAdd(ctx *gin.Context) {
 
 // UserArticleGet 取得用户文章
 func UserArticleGet(ctx *gin.Context) {
-	username := ctx.Param("username")
+	username := ctx.Query("username")
 
 	var articleList, err = api.GetUserArticles(username)
 	// if err != nil {
