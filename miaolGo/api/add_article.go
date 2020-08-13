@@ -79,7 +79,7 @@ func GetUserArticles(userName string) (articleList []map[string]string, err erro
 	article := models.NewArticle()
 	db := drivers.Testsql()
 	defer db.Close()
-	sql := `SELECT title,article,image_address,time FROM article WHERE name=$1;`
+	sql := `SELECT title,article,image_address,time FROM article WHERE name=$1 ORDER BY id DESC;`
 	rows, err := db.Query(sql, userName)
 	if err != nil {
 		log.Println(err)
