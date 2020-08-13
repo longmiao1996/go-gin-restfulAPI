@@ -49,7 +49,7 @@ func UploadImage(userName, imageBase64, image string) (imageName string, flag bo
 		flag = false
 		return
 	}
-	time := time.Now().Format("2006-01-02 15:04:05")
+	time := time.Now().Format("2006-01-02-15:04:05")
 	imageName = fmt.Sprintf("/media/image/%s%s%s.jpg", userName, time, image)
 	file, err := os.OpenFile(imageName, os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
