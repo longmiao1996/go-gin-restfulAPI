@@ -59,7 +59,7 @@ func UploadImage(userName, imageBase64, image string) (imageName string, flag bo
 	}
 	defer file.Close()
 	file.Write(imageByte)
-	imageName = strings.TrimLeft("/media", imageName)
+	imageName = strings.TrimPrefix(imageName, "/media")
 
 	return
 }
