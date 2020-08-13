@@ -79,18 +79,18 @@ func GetUserArticles(userName string) (articleList []map[string]string, err erro
 	article := models.NewArticle()
 	db := drivers.Testsql()
 	defer db.Close()
-	sql := `SELECT title,article,image_address FROM article WHERE name=$1;`
+	sql := `SELECT title,article,image_address,time FROM article WHERE name=$1;`
 	rows, err := db.Query(sql, userName)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	for rows.Next() {
-		rows.Scan(&article.TITLE, &article.ARTICLE, &article.IMAGEADDRESS)
+		rows.Scan(&article.TITLE, &article.ARTICLE, &article.IMAGEADDRESS, &article.TIME)
 		// articleMap["title"] = article.TITLE
 		// articleMap["article"] = article.TITLE
 		// articleMap["title"] = article.TITLE
-		articleList = append(articleList, map[string]string{"title": article.TITLE, "article": article.ARTICLE, "imageAddr": article.IMAGEADDRESS})
+		articleList = append(articleList, map[string]string{"title": article.TITLE, "article": article.ARTICLE, "imageAddr": article.IMAGEADDRESS, "time": article.TIME})
 	}
 	return
 }
